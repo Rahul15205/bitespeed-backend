@@ -1,128 +1,53 @@
 Bitespeed Backend Task: Identity Reconciliation
-
 Overview
-
-This project implements an Identity Reconciliation system, which consolidates user identities based on shared phone numbers and emails. The system processes incoming user records, linking them to existing identities or creating new ones when necessary.
-
-Features
-
-Identify and link users based on phone numbers and emails.
-
-Merge user records to maintain a single source of truth.
-
-Efficient querying for retrieving linked identities.
-
+This project manages identity reconciliation by linking user records based on shared emails and phone numbers. It ensures a unified source of truth for user identities by consolidating multiple records into a single contact.
 
 Tech Stack
-
-Backend: Node.js with Express
-
-Database: PostgreSQL
-
+Backend: Node.js (Express)
+Database: PostgreSQL (Hosted on Render)
 ORM: Sequelize
-
-Authentication: Not required for this task
-
-API Format: REST
-
-
+Hosting: Render
 API Endpoints
+1. Identify and Link User Records
+POST /identify
+Determines and associates user records using shared emails and phone numbers.
 
-1. Reconcile Identity
-
-Endpoint: POST /identify
-Request Body:
-
+Request Body (JSON):
 {
-  "email": "john@example.com",
+  "email": "user@example.com",
   "phoneNumber": "+1234567890"
 }
-
-Response:
-
+Response (JSON):
 {
   "primaryContactId": 1,
-  "emails": ["john@example.com"],
+  "emails": ["user@example.com"],
   "phoneNumbers": ["+1234567890"],
+  "secondaryContactIds": []
+}
+2. Retrieve Linked User Details
+GET /contacts/:id
+Fetches all associated details for a given contact ID.
+
+Response (JSON):
+{
+  "primaryContactId": 1,
+  "emails": ["user@example.com", "alternate@example.com"],
+  "phoneNumbers": ["+1234567890", "+9876543210"],
   "secondaryContactIds": [2, 3]
 }
-
-2. Fetch Identity Details (Optional)
-
-Endpoint: GET /contacts/:id
-Returns the merged identity for a given contact ID.
-
-Database Schema
-
-Contacts Table (SQL) / Collection (NoSQL)
-
-id: Unique identifier
-
-email: Email address
-
-phone_number: Phone number
-
-linked_id: ID of the primary contact (if it's a secondary contact)
-
-link_precedence: "primary" or "secondary"
-
-created_at: Timestamp
-
-updated_at: Timestamp
-
-
-Identity Reconciliation Logic
-
-1. Check if the provided email or phone number exists in the database.
-
-
-2. If both are new, create a new primary contact.
-
-
-3. If either exists, link the new record to the existing primary contact.
-
-
-4. If multiple primary contacts exist, merge them, keeping the older one as primary.
-
-
-5. Return the consolidated identity details.
-
-
-
-Setup Instructions
-
-1. Clone the repository:
-
+Setup Guide
+1. Clone & Install Dependencies
 git clone https://github.com/your-repo.git
 cd your-repo
-
-
-2. Install dependencies:
-
 npm install
+2. Configure Environment Variables
+Create a .env file in the root directory and define the following variables:
 
-
-3. Setup environment variables (.env)
-
-DATABASE_URL=your_database_url
+DATABASE_URL=your_render_postgresql_url
 PORT=3000
-
-
-4. Run database migrations (for SQL-based setup):
-
+3. Run Migrations & Launch Server
 npx sequelize-cli db:migrate
-
-
-5. Start the server:
-
 npm start
+Deployment
+The application is hosted on Render (Backend & Database). Ensure migrations execute on startup.
 
-
-
-Testing
-
-Use Postman or cURL to test the API.
-
-Run unit tests:
-
-npm test
