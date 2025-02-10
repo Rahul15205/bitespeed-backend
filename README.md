@@ -17,9 +17,9 @@ Tech Stack
 
 Backend: Node.js with Express
 
-Database: PostgreSQL / MongoDB (choose based on preference)
+Database: PostgreSQL
 
-ORM: Sequelize / Mongoose
+ORM: Sequelize
 
 Authentication: Not required for this task
 
