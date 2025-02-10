@@ -70,6 +70,5 @@ npm start
 ## Deployment
 The application is hosted on **Render** (Backend & Database). Ensure migrations execute on startup.
 
-## Support
-For any inquiries, feel free to get in touch!
+
 
